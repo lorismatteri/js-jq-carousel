@@ -1,72 +1,57 @@
 //Generare un carosello di immagini
+
 $(function() {
     //1. Prendo le icone delle frecce con jQuery e le metto in una variabile
     var avanti = $('.next i');
     var indietro = $('.prev i');
 
-    //Generiamo un carosello in avanti spostando la classe active da una img all'altra
-    avanti.click(function() {
-        var imgVisualizzata = $('img.active');
-        imgVisualizzata.removeClass('active').next().addClass('active');
+    //2. Creo una funzione per scorrere avanti le immagini e i cerchi blu spostando la classe active da una img/icon all'altra
+    function goNext(image, cerchio) {
+        var image = $('img.active');
+        var cerchio = $('i.active');
 
-        if(imgVisualizzata.hasClass('last')) {
+        image.removeClass('active').next().addClass('active');
+        cerchio.removeClass('active').next().addClass('active');
+    
+        if(image.hasClass('last')) {
             $('img.first').addClass('active');
         }
-        
-        //Rendiamo attivi i cerchi
-        var cerchioBlu = $('i.active');
-        cerchioBlu.removeClass('active').next().addClass('active');
-
-        if(cerchioBlu.hasClass('last')) {
+        if(cerchio.hasClass('last')) {
             $('i.first').addClass('active');
         }
-    });
+    }
+    
+    //3. Ne creo un'altra per il  senso opposto
+    function goPrev(image, cerchio,) {
+        var image = $('img.active');
+        var cerchio = $('i.active');
+        
+        image.removeClass('active').prev().addClass('active');
+        cerchio.removeClass('active').prev().addClass('active');
 
-    //Ora facciamo in senso opposto
-    indietro.click(function() {
-        var imgVisualizzata = $('img.active');
-        imgVisualizzata.removeClass('active').prev().addClass('active');
-
-        if(imgVisualizzata.hasClass('first')) {
+        if(image.hasClass('first')) {
             $('img.last').addClass('active');
         }
-
-        //Rendiamo i cerchi attivi
-        var cerchioBlu = $('i.active');
-        cerchioBlu.removeClass('active').prev().addClass('active');
-
-        if(cerchioBlu.hasClass('first')) {
+        if(cerchio.hasClass('first')) {
             $('i.last').addClass('active');
         }
-        
-    });
+    }
 
+    //Generiamo un carosello in avanti 
+    avanti.click(function() {
+        goNext();
+    });
+    //e indietro
+    indietro.click(function() {
+        goPrev();s
+    });
+    
     //Implementiamo l'uso delle frecce della tastiera
     $(document).keydown(function(x) {
-        var imgVisualizzata = $('img.active');
-        var cerchioBlu = $('i.active');
         if (x.which == 37) {
-            imgVisualizzata.removeClass('active').prev().addClass('active');
-            cerchioBlu.removeClass('active').prev().addClass('active');
-
-            if(imgVisualizzata.hasClass('first')) {
-                $('img.last').addClass('active');
-            }
-            if(cerchioBlu.hasClass('first')) {
-                $('i.last').addClass('active');
-            }
-
+            goPrev();
         } else if (x.which == 39) {
-            imgVisualizzata.removeClass('active').next().addClass('active');
-            cerchioBlu.removeClass('active').next().addClass('active');
-
-            if(imgVisualizzata.hasClass('last')) {
-                $('img.first').addClass('active');
-            }
-            if(cerchioBlu.hasClass('last')) {
-                $('i.first').addClass('active');
-            }
-
+            goNext();
         }
     });
 })
